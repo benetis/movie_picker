@@ -16,7 +16,8 @@ router.get('/', function(req, res, next) {
     $('.detailed').filter(function () {
       var movie = $(this).children();
       var title = movie.last().find('a').first().text();
-      movies.push({title: title});
+      var year = movie.last().find('.year_type').text().slice(1, -1);
+      movies.push({title: title, year: year});
     });
     res.send(movies);
   });
