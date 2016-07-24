@@ -1,6 +1,6 @@
+var Scraper = require('../models/scraper');
 var express = require('express');
 var router = express.Router();
-var Scraper = require('../models/scraper');
 
 /* GET users listing. */
 router.get('/', function (req, res, next) {

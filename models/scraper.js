@@ -1,11 +1,11 @@
 var request = require('request');
 var cheerio = require('cheerio');
 var util = require('util');
+var _ = require('lodash');
 
 module.exports = {
   movies: [],
-  scrape: function(callback) {
-    var url = 'http://www.imdb.com/search/title?groups=top_1000';
+  doRequest: function (url, callback) {
     request(url, {headers: {'accept-language': 'en'}}, function (error, response, html) {
       if (error) {
         return;
@@ -33,6 +33,18 @@ module.exports = {
       });
       callback(movies);
     });
+  },
+  scrape: function(callback) {
+    var url = 'http://www.imdb.com/search/title?groups=top_1000';
+    console.log(_.isEmpty(this.movies), this.movies);
+    if(_.isEmpty(this.movies)) {
+      this.doRequest(url, function(movies) {
+        this.movies = movies;
+        callback(this.movies);
+      });
+    } else {
+      callback(this.movies);
+    }
   },
   random: function(callback) {
     this.scrape(function(movies) {
