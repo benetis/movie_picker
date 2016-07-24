@@ -2,6 +2,7 @@
   "name": "movie_picker",
   "version": "0.0.1-alpha1",
   "private": true,
+  "license": "MIT",
   "scripts": {
     "start": "node ./bin/www"
   },
