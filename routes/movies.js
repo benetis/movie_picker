@@ -9,9 +9,10 @@ router.get('/', function (req, res, next) {
   })
 });
 
-// router.get('/random', function (req, res, next) {
-//   var randomMovie = movie_cache[Math.floor(movie_cache.length * Math.random())];
-//   res.send(randomMovie)
-// });
+router.get('/random', function (req, res, next) {
+  Scraper.scrape(function(movies) {
+    res.send(movies[Math.floor(movies.length * Math.random())]);
+  });
+});
 
 module.exports = router;
