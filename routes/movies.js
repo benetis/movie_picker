@@ -20,10 +20,16 @@ router.get('/', function (req, res, next) {
             var title = movie.find('a').first().text();
             var year = movie.find('.year_type').text().slice(1, -1);
             var duration = movie.find('.runtime').text();
+            var scrapped_rating = movie.find('.rating').attr('title');
+            var user_ratings = scrapped_rating.match(/[0-9]+(\.[0-9][0-9]?)?/)[0];
+            var user_ratings_voted = scrapped_rating.match(/\((.*?)\)/)[1];
+
             movies.push({
                 title: title,
                 year: year,
-                duration: duration
+                duration: duration,
+                user_ratings: user_ratings,
+                user_ratings_amount: user_ratings_voted
             });
         });
         res.send(movies);
