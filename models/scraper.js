@@ -3,6 +3,7 @@ var cheerio = require('cheerio');
 var util = require('util');
 
 module.exports = {
+  movies: [],
   scrape: function(callback) {
     var url = 'http://www.imdb.com/search/title?groups=top_1000';
     request(url, {headers: {'accept-language': 'en'}}, function (error, response, html) {
@@ -32,5 +33,11 @@ module.exports = {
       });
       callback(movies);
     });
+  },
+  random: function(callback) {
+    this.scrape(function(movies) {
+      callback(movies[Math.floor(movies.length * Math.random())]);
+    })
   }
+
 };
