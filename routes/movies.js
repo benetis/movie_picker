@@ -5,26 +5,33 @@ var cheerio = require('cheerio');
 var util = require('util');
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
-  var url = 'http://www.imdb.com/search/title?groups=top_1000';
-  request(url, {headers: {'accept-language': 'en'}}, function (error, response, html) {
-    if(error) { return; }
+router.get('/', function (req, res, next) {
+    var url = 'http://www.imdb.com/search/title?groups=top_1000';
+    request(url, {headers: {'accept-language': 'en'}}, function (error, response, html) {
+        if (error) {
+            return;
+        }
 
-    var $ = cheerio.load(html);
-    var movies = [];
+        var $ = cheerio.load(html);
+        var movies = [];
 
-    $('.detailed').filter(function () {
-      var movie = $(this).children();
-      var title = movie.last().find('a').first().text();
-      var year = movie.last().find('.year_type').text().slice(1, -1);
-      movies.push({title: title, year: year});
+        $('.detailed').filter(function () {
+            var movie = $(this).children().last();
+            var title = movie.find('a').first().text();
+            var year = movie.find('.year_type').text().slice(1, -1);
+            var duration = movie.find('.runtime').text();
+            movies.push({
+                title: title,
+                year: year,
+                duration: duration
+            });
+        });
+        res.send(movies);
     });
-    res.send(movies);
-  });
 });
 
 router.get('/scrape', function (req, res, next) {
-  res.send('Just scrapin the movies')
+    res.send('Just scrapin the movies')
 });
 
 module.exports = router;
