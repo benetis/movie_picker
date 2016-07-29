@@ -14,10 +14,10 @@ module.exports = {
       var $ = cheerio.load(html);
       var movies = [];
 
-      $('.detailed').filter(function () {
-        var movie = $(this).children().last();
-        var title = movie.find('a').first().text();
-        var year = movie.find('.year_type').text().slice(1, -1);
+      $('.lister-item').filter(function (i, el) {
+        var movie = $(el);
+        var title = $(movie.find('a')[1]).text();
+        var year = movie.find('.lister-item-year').text().slice(1, -1);
         var duration = movie.find('.runtime').text();
         var scrapped_rating = movie.find('.rating').attr('title');
         var user_ratings = scrapped_rating.match(/[0-9]+(\.[0-9][0-9]?)?/)[0];
@@ -30,13 +30,14 @@ module.exports = {
           user_ratings: user_ratings,
           user_ratings_amount: user_ratings_voted
         });
+        console.log(movies);
       });
+
       callback(movies);
     });
   },
   scrape: function(callback) {
     var url = 'http://www.imdb.com/search/title?groups=top_1000';
-    console.log(_.isEmpty(this.movies), this.movies);
     if(_.isEmpty(this.movies)) {
       this.doRequest(url, function(movies) {
         this.movies = movies;
